@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - MyStore</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="footer.css">
+    <style>
+        /* Basic landing styling */
+        .welcome-container {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+        }
+        .shop-now-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #ff9900;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .shop-now-btn:hover {
+            transform: scale(1.1);
+            background-color: #ffb733;
+        }
+
+        /* Carousel styles */
+        .carousel {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            height: 400px;
+            margin: 50px auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            min-width: 100%;
+            user-select: none;
+        }
+        .carousel-item img {
+            width: 100%;   height: 370px;
+            display: block;
+        }
+        .carousel-buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .carousel-buttons button {
+            pointer-events: all;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .carousel-buttons button:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+        /* Categories */
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+        }
+        .category-card {
+            width: 200px;
+            height: 200px;
+            background: #f3f3f3;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Testimonials */
+        .testimonial-container {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .testimonial-slide {
+            display: none;
+        }
+        .testimonial-slide.active {
+            display: block;
+        }
+        .testimonial-slide p {
+            font-style: italic;
+            font-size: 1rem;
+        }
+        .testimonial-slide h4 {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="navbar"></div>
+
+<div class="container welcome-container">
+    <h1>Welcome to MyStore</h1>
+    <p>Check out our featured products!</p>
+    <a href="products.html" class="shop-now-btn">Shop Now</a>
+</div>
+
+<!-- Featured Products Carousel -->
+<div class="carousel">
+  <div class="carousel-track" id="carousel-track">
+    <!-- Items will be injected here dynamically -->
+  </div>
+  <div class="carousel-buttons">
+    <button id="prev">&#10094;</button>
+    <button id="next">&#10095;</button>
+  </div>
+</div>
+
+
+
+<!-- Categories -->
+<div class="categories">
+    <div class="category-card">Electronics</div>
+    <div class="category-card">Clothing</div>
+    <div class="category-card">Home & Kitchen</div>
+    <div class="category-card">Toys</div>
+</div>
+
+<!-- Testimonials -->
+<div class="testimonial-container">
+    <div class="testimonial-slide active">
+        <p>"Great service and fast delivery! Highly recommend."</p>
+        <h4>- John Doe</h4>
+    </div>
+    <div class="testimonial-slide">
+        <p>"Amazing quality products. MyStore never disappoints!"</p>
+        <h4>- Jane Smith</h4>
+    </div>
+    <div class="testimonial-slide">
+        <p>"The best online shopping experience I've ever had."</p>
+        <h4>- Alex Brown</h4>
+    </div>
+</div>
+
+<div id="footer"></div>
+
+<script>
+
+     // Dummy featured products
+  const featuredProducts = [
+    { id: 1, name: "Modern Sofa", image: "./assets/images/sofa.jpg" },
+    { id: 2, name: "Smart TV", image: "./assets/images/tv.jpg" },
+    { id: 3, name: "Wireless Headphones", image: "./assets/images/headphones.jpg" },
+  ];
+
+  const track = document.getElementById('carousel-track');
+
+  // Inject products dynamically
+  featuredProducts.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'carousel-item';
+    div.innerHTML = `<img src="${p.image}" alt="${p.name}"><p style="text-align:center; font-weight:bold; margin-top:5px;">${p.name}</p>`;
+    track.appendChild(div);
+  });
+
+  // Carousel functionality
+  const slides = Array.from(track.children);
+  const nextButton = document.getElementById('next');
+  const prevButton = document.getElementById('prev');
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+  }
+
+  nextButton.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateCarousel();
+  });
+
+  prevButton.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateCarousel();
+  });
+
+  // Auto-slide every 5 seconds
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateCarousel();
+  }, 5000);
+
+
+
+
+
+    // Load footer
+    fetch('footer.html')
+        .then(res => res.text())
+        .then(data => document.getElementById('footer').innerHTML = data);
+
+    // Load navbar
+    loadNavbar();
+
+
+
+    // Auto-slide every 5s
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateCarousel();
+    }, 5000);
+
+    // Testimonial slider
+    let testimonialIndex = 0;
+    const testimonials = document.querySelectorAll('.testimonial-slide');
+    function showTestimonial(index) {
+        testimonials.forEach((t, i) => t.classList.toggle('active', i === index));
+    }
+    setInterval(() => {
+        testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+        showTestimonial(testimonialIndex);
+    }, 4000);
+</script>
+
+<script src="main.js"></script>
+</body>
+</html>

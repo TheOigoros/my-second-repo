@@ -1,0 +1,76 @@
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo">MyStore</div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="nav-link">Home</a></li>
+    <li><a href="products.html" class="nav-link">Products</a></li>
+    <li><a href="cart.html" class="nav-link" id="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
+  </ul>
+</nav>
+
+<style>
+/* Navbar styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #1e90ff; /* bright blue */
+  color: white;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Active page highlight */
+.nav-links a.active {
+  background-color: #ffffff;
+  color: #1e90ff;
+  font-weight: bold;
+}
+</style>
+
+<script>
+  // Highlight current page automatically
+  const links = document.querySelectorAll('.nav-link');
+  links.forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add('active');
+    }
+  });
+
+  // Example: update cart count dynamically
+  const cartCount = document.getElementById('cart-count');
+  // Just a dummy example; you can connect this to your cart logic
+  let count = 3; 
+  cartCount.textContent = count;
+</script>
